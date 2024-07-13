@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { API } from 'utils/api';
 
@@ -17,12 +17,15 @@ import {
   Button,
   Tooltip,
   Stack,
-  ButtonGroup,Select, FormControl,Checkbox
+  ButtonGroup,
+  Select,
+  FormControl,
+  Checkbox
 } from '@mui/material';
 import TableSwitch from 'ui-component/Switch';
-import { renderQuota, showSuccess,showError, timestamp2string } from 'utils/common';
+import { renderQuota, showSuccess, showError, timestamp2string } from 'utils/common';
 import CircularProgress from '@mui/material/CircularProgress';
-import { IconDotsVertical, IconEdit, IconTrash, IconCaretDownFilled,IconEye  } from '@tabler/icons-react';
+import { IconDotsVertical, IconEdit, IconTrash,  IconEye } from '@tabler/icons-react';
 
 const COPY_OPTIONS = [
   {
@@ -65,14 +68,13 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
   const [modelRatioEnabled, setModelRatioEnabled] = useState('');
   const [billingByRequestEnabled, setBillingByRequestEnabled] = useState('');
   const [options, setOptions] = useState({});
-  
 
   const handleBillingChange = async (event) => {
     const billingValue = event.target.value;
     setLoading(true); // 开始使用loading状态
     setBillingEnabled(billingValue); // 更新billingEnabled状态
     try {
-        const res  = await API.put(`/api/token/${item.id}/billing_strategy`, {
+      const res = await API.put(`/api/token/${item.id}/billing_strategy`, {
         billing_enabled: billingValue,
       });
       if (res && res.data) {
@@ -93,7 +95,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
   };
 
   useEffect(() => {
-      getOptions();
+    getOptions();
   }, []);
 
   const getOptions = async () => {
@@ -111,10 +113,10 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
   };
 
   useEffect(() => {
-    if (options.ModelRatioEnabled) { 
+    if (options.ModelRatioEnabled) {
       setModelRatioEnabled(options.ModelRatioEnabled === 'true');
     }
-    if (options.BillingByRequestEnabled) { 
+    if (options.BillingByRequestEnabled) {
       setBillingByRequestEnabled(options.BillingByRequestEnabled === 'true');
     }
   }, [options]);
@@ -129,8 +131,6 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
       }
     }
   };
-  
-  
 
   const handleDeleteOpen = () => {
     handleCloseMenu();
@@ -215,8 +215,7 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
     if (option.key === 'next' || option.key === 'next-mj') {
       url = siteInfo.chat_link + `/#/?settings={"key":"sk-{key}","url":"{serverAddress}"}`;
-    } 
-
+    }
 
     const key = item.key;
     const text = replacePlaceholders(url, key, serverAddress);
@@ -228,8 +227,6 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
     }
     handleCloseMenu();
   };
-
-
 
   const copyItems = createMenu(
     COPY_OPTIONS.map((option) => ({
@@ -251,7 +248,6 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
   return (
     <>
-
       <TableRow tabIndex={item.id}>
         <TableCell padding="checkbox">
           <Checkbox
@@ -259,18 +255,28 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
             onChange={(event) => handleSelectOne(event, item.id)}
           />
         </TableCell>
+        <TableCell>
+    <Button
+      variant="contained"
+      color="primary"
+      style={{ width: '100%', height: '80px', minWidth: '135px', fontSize: '18px' }} // 添加 fontSize 属性
+      onClick={handleChatClick}
+    >
+      开始AI对话
+    </Button>
+  </TableCell>
         <TableCell onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(`${item.name}`);
-                  showSuccess('已复制到剪贴板！');
-                } catch (error) {
-                  showError(`复制失败，请手动复制。${item.name}`); // 提示用户手动复制
-                }
-              }}
-            >
+          try {
+            await navigator.clipboard.writeText(`${item.name}`);
+            showSuccess('已复制到剪贴板！');
+          } catch (error) {
+            showError(`复制失败，请手动复制。${item.name}`); // 提示用户手动复制
+          }
+        }}
+        >
           {item.name}
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ width: '10%' }}>
           <Tooltip
             title={(() => {
               switch (statusSwitch) {
@@ -300,15 +306,15 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
 
         <TableCell>{item.unlimited_quota ? '无限制' : renderQuota(item.remain_quota, 2)}</TableCell>
 
-        <TableCell>{timestamp2string(item.created_time)}</TableCell>
+        {/* 隐藏创建时间 */}
+        {/* <TableCell>{timestamp2string(item.created_time)}</TableCell> */}
 
         <TableCell>{item.expired_time === -1 ? '永不过期' : timestamp2string(item.expired_time)}</TableCell>
         {modelRatioEnabled && billingByRequestEnabled && (
-        <TableCell>
-          {loading ? (
-            <CircularProgress size={24} />
-          ) : (
-            
+          <TableCell>
+            {loading ? (
+              <CircularProgress size={24} />
+            ) : (
               <FormControl fullWidth size="small" variant="outlined" sx={{ minWidth: 100 }}>
                 <Select
                   value={billingEnabled}
@@ -320,42 +326,34 @@ export default function TokensTableRow({ item, manageToken, handleOpenModal, set
                   <MenuItem value={1}>按次计费</MenuItem>
                 </Select>
               </FormControl>
-
-          )}
-        </TableCell>
+            )}
+          </TableCell>
         )}
 
         <TableCell>
           <Stack direction="row" spacing={1}>
             <Tooltip title={`sk-${item.key}`} placement="top" >
-                <IconButton
-                  edge="end"
-                  aria-label="view"
-                  sx={{ color: 'rgb(99, 115, 129)' }}
-                >
-                  <IconEye />
-                </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="view"
+                sx={{ color: 'rgb(99, 115, 129)' }}
+              >
+                <IconEye />
+              </IconButton>
             </Tooltip>
             <ButtonGroup size="small" aria-label="split button">
-            <Button
-              color="primary"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(`sk-${item.key}`);
-                  showSuccess('已复制到剪贴板！');
-                } catch (error) {
-                  showError(`复制失败，请手动复制。sk-${item.key}`); // 提示用户手动复制
-                }
-              }}
-            >
-              复制
-            </Button>
-
-            </ButtonGroup>
-            <ButtonGroup size="small" aria-label="split button">
-              <Button color="primary" onClick={handleChatClick} >聊天</Button>
-              <Button size="small" onClick={(e) => handleOpenMenu(e, 'link')}>
-                <IconCaretDownFilled size={'16px'} />
+              <Button
+                color="primary"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(`sk-${item.key}`);
+                    showSuccess('已复制到剪贴板！');
+                  } catch (error) {
+                    showError(`复制失败，请手动复制。sk-${item.key}`); // 提示用户手动复制
+                  }
+                }}
+              >
+                复制
               </Button>
             </ButtonGroup>
             <IconButton onClick={(e) => handleOpenMenu(e, 'action')} sx={{ color: 'rgb(99, 115, 129)' }}>
