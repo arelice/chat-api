@@ -125,49 +125,39 @@ func (e GeneralErrorResponse) ToMessage() string {
 }
 
 func RelayErrorHandler(resp *http.Response) (ErrorWithStatusCode *relaymodel.ErrorWithStatusCode) {
-	if resp == nil {
-		return &relaymodel.ErrorWithStatusCode{
-			StatusCode: 500,
-			Error: relaymodel.Error{
-				Message: "resp is nil",
-				Type:    "upstream_error",
-				Code:    "bad_response",
-			},
-		}
-	}
-	ErrorWithStatusCode = &relaymodel.ErrorWithStatusCode{
-		StatusCode: resp.StatusCode,
-		Error: relaymodel.Error{
-			Message: "",
-			Type:    "upstream_error",
-			Code:    "bad_response_status_code",
-			Param:   strconv.Itoa(resp.StatusCode),
-		},
-	}
-	responseBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return
-	}
-	err = resp.Body.Close()
-	if err != nil {
-		return
-	}
-	var errResponse GeneralErrorResponse
-	err = json.Unmarshal(responseBody, &errResponse)
-	if err != nil {
-		return
-	}
-	if errResponse.Error.Message != "" {
-		// OpenAI format error, so we override the default one
-		ErrorWithStatusCode.Error = errResponse.Error
-	} else {
-		ErrorWithStatusCode.Error.Message = errResponse.ToMessage()
-	}
-	if ErrorWithStatusCode.Error.Message == "" {
-		ErrorWithStatusCode.Error.Message = fmt.Sprintf("bad response status code %d", resp.StatusCode)
-	}
-	return
+    if resp == nil {
+        return &relaymodel.ErrorWithStatusCode{
+            StatusCode: 500,
+            Error: relaymodel.Error{
+                Message: "请稍后再试试，如长时间不可用，请通知管理员q2411728460 进行处理",
+                Type:    "model_unavailable",
+                Code:    "model_unavailable",
+            },
+        }
+    }
+
+    ErrorWithStatusCode = &relaymodel.ErrorWithStatusCode{
+        StatusCode: resp.StatusCode,
+        Error: relaymodel.Error{
+            Message: "请稍后再试试，如长时间不可用，请通知管理员q2411728460 进行处理",
+            Type:    "model_unavailable",
+            Code:    "model_unavailable",
+        },
+    }
+
+    // 读取上游响应体（可选，如果需要记录上游错误信息）
+    _, err := io.ReadAll(resp.Body)
+    if err != nil {
+        // 不记录错误
+    }
+    err = resp.Body.Close()
+    if err != nil {
+        // 不记录错误
+    }
+
+    return
 }
+
 
 func GetFullRequestURL(baseURL string, requestURL string, channelType int) string {
 	fullRequestURL := fmt.Sprintf("%s%s", baseURL, requestURL)
