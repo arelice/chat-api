@@ -16,7 +16,7 @@ func ErrorWrapper(err error, code string, statusCode int) *model.ErrorWithStatus
 	}
 	Error := model.Error{
 		Message: text,
-		Type:    "chat_api_error",
+		Type:    "rjl_api_error",
 		Code:    code,
 	}
 	return &model.ErrorWithStatusCode{
