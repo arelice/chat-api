@@ -82,7 +82,7 @@ func selectChannelForUser(c *gin.Context, tokenGroup string, modelName string) (
 	failedChannelIds := []int{}
 	channel, err := model.CacheGetRandomSatisfiedChannel(tokenGroup, modelName, false, isTools, failedChannelIds, 0)
 	if err != nil {
-		message := fmt.Sprintf("当前分组 %s 下对于模型 %s 无可用渠道", tokenGroup, modelName)
+		message := fmt.Sprintf("当前分组 %s 下模型配置出错了，请通知管理员q2411728460进行处理", tokenGroup, modelName)
 		if channel != nil {
 			common.SysError(fmt.Sprintf("渠道不存在：%d", channel.Id))
 			message = "数据库一致性已被破坏，请联系管理员"
