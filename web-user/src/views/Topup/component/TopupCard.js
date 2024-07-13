@@ -380,6 +380,21 @@ const TopupCard = () => {
         }}
       >
         <SubCard sx={{ marginTop: '40px' }}>
+        {renderTopUpAmountInput()} {/* 微信和支付宝充值模块 */}
+        </SubCard>
+        {topUpLink && (
+          <SubCard sx={{ marginTop: '40px' }}>
+            <Stack justifyContent="center" alignItems={'center'} spacing={3} paddingTop={'20px'}>
+              <Typography variant={'h4'} color={theme.palette.grey[700]}>
+                 充值方法二：商店获取兑换码，粘贴到下面的输入框，再点击兑换即可获得余额
+              </Typography>
+              <Button variant="contained" onClick={openTopUpLink}>
+                兑换码商店
+              </Button>
+            </Stack>
+          </SubCard>
+        )}
+        <SubCard sx={{ marginTop: '40px' }}>
         <FormControl fullWidth variant="outlined" sx={{ mt: 2, mb: 1 }}>
           <Box 
             sx={{ 
@@ -412,23 +427,6 @@ const TopupCard = () => {
             </Button>
           </Box>
         </FormControl>
-
-
-        {topUpLink && (
-          <Stack justifyContent="center" alignItems={'center'} spacing={3} paddingTop={'20px'}>
-            <Typography variant={'h4'} color={theme.palette.grey[700]}>
-              还没有兑换码？ 点击获取兑换码：
-            </Typography>
-            <Button variant="contained" onClick={openTopUpLink}>
-              获取兑换码
-            </Button>
-          </Stack>
-        )}
-        </SubCard>
-       
-        <SubCard sx={{ marginTop: '40px' }}>
-        {renderTopUpAmountInput()} {/* 正确的函数调用方式 */}
-         
         </SubCard>
           <Modal open={open} onClose={() => setOpen(false)}>
             {renderModalContent()}
