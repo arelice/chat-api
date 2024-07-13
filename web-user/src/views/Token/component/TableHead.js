@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { TableCell, TableHead, TableRow,Checkbox } from '@mui/material';
+import { TableCell, TableHead, TableRow, Checkbox } from '@mui/material';
 
 const TokenTableHead = ({ numSelected, rowCount, onSelectAllClick, modelRatioEnabled, billingByRequestEnabled }) => {
   return (
@@ -12,16 +12,15 @@ const TokenTableHead = ({ numSelected, rowCount, onSelectAllClick, modelRatioEna
             onChange={onSelectAllClick}
           />
         </TableCell>
-        <TableCell>名称</TableCell>
-        <TableCell>状态</TableCell>
-        <TableCell>已用额度</TableCell>
-        <TableCell>剩余额度</TableCell>
-        <TableCell>创建时间</TableCell>
-        <TableCell>过期时间</TableCell>
-        {modelRatioEnabled && billingByRequestEnabled && (
-          <TableCell>计费策略</TableCell>
+        
+        <TableCell sx={{ width: 'auto' }}>将所有最先进的AI聚合进行对话</TableCell>
+        <TableCell sx={{ width: 'auto' }}>名称</TableCell>
+        <TableCell sx={{ width: 'auto' }}>开关</TableCell>
+        <TableCell key="expiry-time" sx={{ minWidth: 150, maxWidth: 150 }}>过期时间</TableCell>
+{modelRatioEnabled && billingByRequestEnabled && (
+  <TableCell key="billing-strategy" sx={{ minWidth: 150, maxWidth: 150 }}>计费策略</TableCell>
         )}
-        <TableCell>操作</TableCell>
+        <TableCell sx={{ width: 'auto' }}>操作</TableCell>
       </TableRow>
     </TableHead>
   );
@@ -30,9 +29,9 @@ const TokenTableHead = ({ numSelected, rowCount, onSelectAllClick, modelRatioEna
 TokenTableHead.propTypes = {
   modelRatioEnabled: PropTypes.bool,
   billingByRequestEnabled: PropTypes.bool,
-  onSelectAllClick: PropTypes.func.isRequired, // 新增 propType
-  numSelected: PropTypes.number.isRequired, // 新增 propType
-  rowCount: PropTypes.number.isRequired // 新增 propType
+  onSelectAllClick: PropTypes.func.isRequired,
+  numSelected: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired
 };
 
 export default TokenTableHead;
