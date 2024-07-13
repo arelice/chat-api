@@ -22,29 +22,31 @@ const panel = {
   id: '/',
   type: 'group',
   children: [
-    {
-      id: 'dashboard',
-      title: '数据总览',
-      type: 'item',
-      url: '/dashboard',
-      icon: icons.IconDashboard,
-      breadcrumbs: false,
-      isAdmin: false
-    },
+    //{
+    //  id: 'dashboard',
+   //   title: '数据总览',
+    //  type: 'item',
+    //  url: '/dashboard',
+    //  icon: icons.IconDashboard,
+    //  breadcrumbs: false,
+//isAdmin: false
+   // },
     {
       id: 'token',
-      title: '令牌管理',
+      title: '开始对话/令牌',
       type: 'item',
       url: '/token',
       icon: icons.IconKey,
       breadcrumbs: false
     },
-    {
-      id: 'log',
-      title: '消费日志',
+   
+
+      {
+      id: 'topup',
+      title: '充值/余额',
       type: 'item',
-      url: '/log',
-      icon: icons.IconBrandGoogleAnalytics,
+      url: '/topup',
+      icon: icons.IconGardenCart,
       breadcrumbs: false
     },
     //{
@@ -55,30 +57,31 @@ const panel = {
     //  icon: icons.IconArticle,
     //  breadcrumbs: false
     //},
-    {
-      id: 'topup',
-      title: '钱包充值',
+       {
+      id: 'log',
+      title: '消费日志',
       type: 'item',
-      url: '/topup',
-      icon: icons.IconGardenCart,
+      url: '/log',
+      icon: icons.IconBrandGoogleAnalytics,
       breadcrumbs: false
     },
+    
     {
       id: 'about',
-      title: '使用教程',
+      title: 'API接口文档',
       type: 'item',
       url: '/about',
       icon: icons.IconInfoCircle,
       breadcrumbs: false
     },
-    {
-      id: 'profile',
-      title: '个人设置',
-      type: 'item',
-      url: '/profile',
-      icon: icons.IconUserScan,
-      breadcrumbs: false,
-    }
+   // {
+    //  id: 'profile',
+     // title: '个人设置',
+    //  type: 'item',
+    //  url: '/profile',
+//icon: icons.IconUserScan,
+  //    breadcrumbs: false,
+  //  }
   ]
 };
 
