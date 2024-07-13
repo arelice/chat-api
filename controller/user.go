@@ -202,7 +202,7 @@ func Register(c *gin.Context) {
 	user.ValidateAndFill()
 	cleanToken := model.Token{
 		UserId:         user.Id,
-		Name:           "初始令牌",
+		Name:           "RJLAPI",
 		Key:            common.GenerateKey(),
 		CreatedTime:    0,
 		AccessedTime:   0,
