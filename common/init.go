@@ -19,7 +19,7 @@ var (
 func printHelp() {
 	fmt.Println("RJL API " + Version + " - All in one API service for OpenAI API.")
 	fmt.Println("Copyright (C) 2023 JustSong. All rights reserved.")
-	fmt.Println("GitHub: https://github.com/ai365vip/chat-api")
+	fmt.Println("RJLAPI: https://api.raojialong.space")
 	fmt.Println("Usage: one-api [--port <port>] [--log-dir <log directory>] [--version] [--help]")
 }
 
