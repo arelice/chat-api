@@ -11,12 +11,12 @@ import Alert from '@mui/material/Alert';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Toolbar from '@mui/material/Toolbar';
 
-import { Button, Card, Box, Stack, Container,TextField } from '@mui/material';
+import { Button, Card,  Stack, Container } from '@mui/material';
 import TokensTableRow from './component/TableRow';
 import TokenTableHead from './component/TableHead';
 import { API } from 'utils/api';
 import { ITEMS_PER_PAGE } from 'constants';
-import { IconRefresh, IconPlus,IconTrash } from '@tabler/icons-react';
+import { IconRefresh, IconPlus, IconTrash } from '@tabler/icons-react';
 import EditeModal from './component/EditModal';
 import { useSelector } from 'react-redux';
 
@@ -24,19 +24,17 @@ export default function Token() {
   const [tokens, setTokens] = useState([]);
   const [activePage, setActivePage] = useState(0);
   const [searching, setSearching] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [editTokenId, setEditTokenId] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const siteInfo = useSelector((state) => state.siteInfo);
   const [modelRatioEnabled, setModelRatioEnabled] = useState('');
   const [billingByRequestEnabled, setBillingByRequestEnabled] = useState('');
   const [options, setOptions] = useState({});
   const [selected, setSelected] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(ITEMS_PER_PAGE);
-  const [searchToken, setSearchToken] = useState('');
 
-
-  const loadTokens = async (startIdx = 0, rowsPerPage = ITEMS_PER_PAGE) => {
+  const loadTokens = async (startIdx, rowsPerPage = ITEMS_PER_PAGE) => {
     setSearching(true);
     try {
       const res = await API.get(`/api/token/?p=${startIdx}&size=${rowsPerPage}`);
@@ -54,12 +52,9 @@ export default function Token() {
       }
     } catch (error) {
       showError(`加载数据时出错: ${error}`);
-    } finally {
-      setSearching(false);
     }
+    setSearching(false);
   };
-  
-  
 
   useEffect(() => {
     loadTokens(0, rowsPerPage)
@@ -67,9 +62,8 @@ export default function Token() {
       .catch((reason) => {
         showError(reason);
       });
-      getOptions();
+    getOptions();
   }, [rowsPerPage]);
-  
 
   const getOptions = async () => {
     const res = await API.get('/api/user/option');
@@ -86,56 +80,22 @@ export default function Token() {
   };
 
   useEffect(() => {
-    if (options.ModelRatioEnabled) { 
+    if (options.ModelRatioEnabled) {
       setModelRatioEnabled(options.ModelRatioEnabled === 'true');
     }
-    if (options.BillingByRequestEnabled) { 
+    if (options.BillingByRequestEnabled) {
       setBillingByRequestEnabled(options.BillingByRequestEnabled === 'true');
     }
   }, [options]);
 
   const onPaginationChange = (event, newActivePage) => {
     (async () => {
-      if (newActivePage >= Math.ceil(tokens.length / rowsPerPage)) {
+      if (newActivePage === Math.ceil(tokens.length / rowsPerPage)) {
+        // In this case we have to load more data and then append them.
         await loadTokens(newActivePage);
       }
       setActivePage(newActivePage);
     })();
-  };
-  
-  
-
-  const searchTokens = async (event) => {
-    event.preventDefault();
-    setSearching(true);
-    try {
-      const query = new URLSearchParams({
-        keyword: searchKeyword,
-        token: searchToken
-      }).toString();
-      const res = await API.get(`/api/token/search?${query}`);
-      const { success, message, data } = res.data;
-      if (success) {
-        setTokens(data);
-        setActivePage(0);
-      } else {
-        showError(message);
-      }
-    } catch (error) {
-      showError(`搜索时出错: ${error}`);
-    } finally {
-      setSearching(false);
-    }
-  };
-  
-  
-
-  const handleSearchTokenChange = (event) => {
-    setSearchToken(event.target.value);
-  };
-
-  const handleSearchKeyword = (event) => {
-    setSearchKeyword(event.target.value);
   };
 
   const manageToken = async (id, action, value) => {
@@ -170,7 +130,6 @@ export default function Token() {
   const handleRefresh = async () => {
     await loadTokens(0);
     setActivePage(0);
-    setSearchKeyword('');
   };
 
   const handleOpenModal = (tokenId) => {
@@ -204,12 +163,10 @@ export default function Token() {
     const newRowsPerPage = parseInt(event.target.value, 10);
     setRowsPerPage(newRowsPerPage); // 更新每页显示的行数
     setActivePage(0); // 重置到第一页
-    loadTokens(0, newRowsPerPage); 
+    loadTokens(0, newRowsPerPage);
   };
-  
 
   const handleDeleteSelected = async () => {
-
     const promises = selected.map((id) => API.delete(`/api/token/${id}`));
     const results = await Promise.allSettled(promises);
     const success = results.every((result) => result.status === 'fulfilled');
@@ -225,27 +182,27 @@ export default function Token() {
   const handleSelectOne = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-  
+
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex >= 0) {
       newSelected = newSelected.filter((selectedId) => selectedId !== id);
     }
-  
+
     setSelected(newSelected);
   };
-  
+
   const copySelectedKeys = () => {
     const selectedKeysText = selected.map((id) => {
       const token = tokens.find((token) => token.id === id);
-      return token ? `sk-${token.key}` : ''; 
+      return token ? `sk-${token.key}` : '';
     }).join('\n');
-  
+
     if (!navigator.clipboard) {
       showError('复制到剪贴板失败：剪贴板功能不可用');
       return;
     }
-  
+
     navigator.clipboard.writeText(selectedKeysText)
       .then(() => {
         showSuccess('选中的 keys 已复制到剪贴板');
@@ -254,47 +211,15 @@ export default function Token() {
         showError('复制到剪贴板失败：' + err);
       });
   };
-  
-  
-  
 
   return (
     <>
       <Stack mb={5}>
         <Alert severity="info">
-          将OpenAI API基础地址https://api.openai.com替换为<b>{siteInfo.server_address}</b>，复制下面的密钥即可使用。
+        温馨提示：使用AI对话前，请先确认你的余额是否充足！点击左上角按钮即可看到充值路径。
         </Alert>
       </Stack>
       <Card>
-      <Box component="form" onSubmit={searchTokens} mt={2} noValidate sx={{ display: 'flex', alignItems: 'center', gap: 4, padding: 2 }}>
-        {/* 搜索名称的输入框 - 设置边距 */}
-        <TextField
-          label="名称"
-          value={searchKeyword}
-          onChange={handleSearchKeyword}
-          variant="outlined"
-          size="small"
-          placeholder="搜索令牌的名称..."
-          fullWidth // 输入框全宽
-          sx={{ flex: 1, minWidth: '150px', marginX: 1 }} // 增加左右外边距
-        />
-        {/* 搜索 Token 的输入框 - 设置边距 */}
-        <TextField
-          label="令牌"
-          value={searchToken}
-          onChange={handleSearchTokenChange}
-          variant="outlined"
-          size="small"
-          placeholder="搜索令牌的 key..."
-          fullWidth // 输入框全宽
-          sx={{ flex: 1, minWidth: '150px', marginX: 1 }} // 增加左右外边距
-        />
-        {/* 搜索按钮 - 设置边距 */}
-        <Button type="submit" variant="contained" color="primary" sx={{ marginX: 1 }}>
-          搜索
-        </Button>
-      </Box>
-
         <Toolbar
           sx={{
             textAlign: 'right',
@@ -317,16 +242,15 @@ export default function Token() {
               )}
               {selected.length > 0 && (
                 <Button
-                    onClick={copySelectedKeys}
-                    disabled={selected.length === 0} // 当没有选中项时禁用按钮
-                  >
-                    复制选中的 Key
-                  </Button>
-              
+                  onClick={copySelectedKeys}
+                  disabled={selected.length === 0} // 当没有选中项时禁用按钮
+                >
+                  复制选中的 Key
+                </Button>
               )}
-              <Button 
-                onClick={handleRefresh} 
-                startIcon={<IconRefresh  />}
+              <Button
+                onClick={handleRefresh}
+                startIcon={<IconRefresh />}
                 style={{ marginRight: '8px' }}  // 添加右边距
               >
                 刷新
@@ -349,28 +273,27 @@ export default function Token() {
         <PerfectScrollbar component="div">
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <TokenTableHead 
-              numSelected={selected.length}
-              rowCount={tokens.length}
-              onSelectAllClick={handleSelectAllClick}
-              modelRatioEnabled={modelRatioEnabled}
-              billingByRequestEnabled={billingByRequestEnabled}
+              <TokenTableHead
+                numSelected={selected.length}
+                rowCount={tokens.length}
+                onSelectAllClick={handleSelectAllClick}
+                modelRatioEnabled={modelRatioEnabled}
+                billingByRequestEnabled={billingByRequestEnabled}
               />
               <TableBody>
-              {tokens.slice(activePage * rowsPerPage, (activePage + 1) * rowsPerPage).map((row) => (
-                <TokensTableRow
-                  item={row}
-                  manageToken={manageToken}
-                  key={row.id}
-                  handleOpenModal={handleOpenModal}
-                  setModalTokenId={setEditTokenId}
-                  modelRatioEnabled={modelRatioEnabled}
-                  billingByRequestEnabled={billingByRequestEnabled}
-                  selected={selected}
-                  handleSelectOne={handleSelectOne} // 这里传递 handleSelectOne
-                />
-              ))}
-
+                {tokens.slice(activePage * rowsPerPage, (activePage + 1) * rowsPerPage).map((row) => (
+                  <TokensTableRow
+                    item={row}
+                    manageToken={manageToken}
+                    key={row.id}
+                    handleOpenModal={handleOpenModal}
+                    setModalTokenId={setEditTokenId}
+                    modelRatioEnabled={modelRatioEnabled}
+                    billingByRequestEnabled={billingByRequestEnabled}
+                    selected={selected}
+                    handleSelectOne={handleSelectOne} // 这里传递 handleSelectOne
+                  />
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -378,12 +301,12 @@ export default function Token() {
         <TablePagination
           page={activePage}
           component="div"
-          count={-1} 
-          rowsPerPage={rowsPerPage} 
+          count={-1}
+          rowsPerPage={rowsPerPage}
           onPageChange={onPaginationChange}
-          onRowsPerPageChange={handleRowsPerPageChange} 
-          rowsPerPageOptions={[10, 30,50,100]} 
-          labelRowsPerPage="每页行数：" 
+          onRowsPerPageChange={handleRowsPerPageChange}
+          rowsPerPageOptions={[10, 30, 50, 100]}
+          labelRowsPerPage="每页行数："
           labelDisplayedRows={({ from, to }) => {
             return `${from}–${to}`;
           }}
