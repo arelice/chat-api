@@ -159,7 +159,7 @@ func processChannelRelayError(ctx *gin.Context, channelId int, channelName strin
 func RelayNotImplemented(c *gin.Context) {
 	err := dbmodel.Error{
 		Message: "API not implemented",
-		Type:    "chat_api_error",
+		Type:    "rjl_api_error",
 		Param:   "",
 		Code:    "api_not_implemented",
 	}
