@@ -142,7 +142,7 @@ const RegisterForm = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-username-register">用户名</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-username-register">用户名 :请记好，因为登入时要用这个登入</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-username-register"
                 type="text"
@@ -160,7 +160,7 @@ const RegisterForm = ({ ...others }) => {
             </FormControl>
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-register">密码</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password-register">密码：至少9位数字</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
@@ -199,7 +199,7 @@ const RegisterForm = ({ ...others }) => {
               error={Boolean(touched.confirmPassword && errors.confirmPassword)}
               sx={{ ...theme.typography.customInput }}
             >
-              <InputLabel htmlFor="outlined-adornment-confirm-password-register">确认密码</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-confirm-password-register">确认密码：至少9位数字</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-confirm-password-register"
                 type={showPassword ? 'text' : 'password'}
@@ -299,25 +299,6 @@ const RegisterForm = ({ ...others }) => {
             ) : (
               <></>
             )}
-            <FormControl fullWidth error={Boolean(touched.aff_code && errors.aff_code)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-affCode-register">邀请码</InputLabel>
-              <OutlinedInput
-                  id="outlined-adornment-affCode-register"
-                  type="text"
-                  value={values.aff_code}
-                  name="aff_code"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  inputProps={{
-                    maxLength: 6 
-                  }}
-              />
-              {touched.aff_code && errors.aff_code && (
-                  <FormHelperText error id="standard-weight-helper-text-affCode-register">
-                      {errors.aff_code}
-                  </FormHelperText>
-              )}
-          </FormControl>
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
