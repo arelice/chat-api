@@ -121,7 +121,7 @@ func (a *Adaptor) DoResponse(c *gin.Context, resp *http.Response, meta *util.Rel
 				return "", nil, &model.ErrorWithStatusCode{
 					Error: model.Error{
 						Message: "No completion tokens generated",
-						Type:    "chat_api_error",
+						Type:    "rjl_api_error",
 						Param:   "completionTokens",
 						Code:    500,
 					},
