@@ -16,7 +16,7 @@ const config = {
     quota_per_unit: 500000,
     server_address: '',
     start_time: 0,
-    system_name: 'Chat API',
+    system_name: 'RJL API',
     system_text: '',
     top_up_link: '',
     turnstile_check: false,
