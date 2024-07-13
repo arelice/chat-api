@@ -250,7 +250,7 @@ export default function Profile() {
                 ))}
               </Box>
             </SubCard>
-            <SubCard title="账号绑定">
+            <SubCard title="账号绑定(方便找回密码）">
               <Grid container spacing={2}>
                 {status.wechat_login && !inputs.wechat_id && (
                   <Grid xs={12} md={4}>
