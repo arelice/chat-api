@@ -41,8 +41,8 @@ const Footer = () => {
           <div className='custom-footer'>
             当前版本 {appVersion} {/* 这里显示版本信息 */}
             ，项目地址{' '}
-            <a href='https://github.com/ai365vip/chat-api'>
-            Chat API
+            <a href='https://api.raojialong.space'>
+            RJL API
             </a>{' '}
           </div>
         )}
