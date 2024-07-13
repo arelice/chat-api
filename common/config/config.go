@@ -8,7 +8,7 @@ import (
 )
 
 // this hard coding will be replaced automatically when building, no need to manually change
-var SystemName = "Chat API"
+var SystemName = "RJL API"
 var SystemText = ""
 var ServerAddress = "http://localhost:3000"
 var OutProxyUrl = ""
