@@ -71,8 +71,8 @@ const ProfileSection = () => {
           alignItems: 'center',
           borderRadius: '27px',
           transition: 'all .2s ease-in-out',
-          borderColor: theme.typography.menuChip.background,
-          backgroundColor: theme.typography.menuChip.background,
+          borderColor: theme.palette.primary.light,
+          backgroundColor: theme.palette.primary.light,
           '&[aria-controls="menu-list-grow"], &:hover': {
             borderColor: theme.palette.primary.main,
             background: `${theme.palette.primary.main}!important`,
@@ -151,6 +151,12 @@ const ProfileSection = () => {
                         <IconUserScan stroke={1.5} size="1.3rem" />
                       </ListItemIcon>
                       <ListItemText primary={<Typography variant="body2">设置</Typography>} />
+                    </ListItemButton>
+                    <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={() => navigate('/token')}>
+                      <ListItemIcon>
+                        <IconHome stroke={1.5} size="1.3rem" />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography variant="body2">对话</Typography>} />
                     </ListItemButton>
                     <ListItemButton sx={{ borderRadius: `${customization.borderRadius}px` }} onClick={() => navigate('/home')}>
                       <ListItemIcon>
