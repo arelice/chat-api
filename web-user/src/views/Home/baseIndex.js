@@ -16,7 +16,7 @@ const BaseIndex = () => (
         <Grid md={7} lg={6}>
           <Stack spacing={3}>
             <Typography variant="h1" sx={{ fontSize: '4rem', color: '#fff', lineHeight: 1.5 }}>
-              RJL API
+              Chat API
             </Typography>
             <Typography variant="h4" sx={{ fontSize: '1.5rem', color: '#fff', lineHeight: 1.5 }}>
               All in one 的 OpenAI 接口 <br />
@@ -25,7 +25,7 @@ const BaseIndex = () => (
             </Typography>
             <Button
               variant="contained"
-              startIcon={<RJLAPI />}
+              startIcon={<GitHub />}
               href="https://api.raojialong.space"
               target="_blank"
               sx={{ backgroundColor: '#24292e', color: '#fff', width: 'fit-content', boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)' }}
