@@ -1,5 +1,4 @@
 <svg viewBox="0 0 590 360" xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <!-- 计算文本的居中位置 -->
-  <text x="295" y="100" font-family="Arial" font-size="100" fill="#0d161f" text-anchor="middle">RJL</text>
-  <text x="295" y="150" font-family="Arial" font-size="30" fill="#0d161f" text-anchor="middle">API</text>
+  <text x="295" y="180" font-family="Arial" font-size="100" fill="#0d161f" text-anchor="middle">RJL</text>
+  <text x="295" y="200" font-family="Arial" font-size="30" fill="#0d161f" text-anchor="middle">API</text>
 </svg>
