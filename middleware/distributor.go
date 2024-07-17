@@ -78,9 +78,9 @@ func selectChannelForUser(c *gin.Context, tokenGroup string, modelName string) (
 	if !ok {
 		return nil, fmt.Errorf("is_tools value is not of type bool")
 	}
-
+	claudeoriginalrequest := c.GetBool("claude_original_request")
 	failedChannelIds := []int{}
-	channel, err := model.CacheGetRandomSatisfiedChannel(tokenGroup, modelName, false, isTools, failedChannelIds, 0)
+	channel, err := model.CacheGetRandomSatisfiedChannel(tokenGroup, modelName, false, isTools, claudeoriginalrequest, failedChannelIds, 0)
 	if err != nil {
 		message := fmt.Sprintf("当前分组 %s 下模型配置出错了，请通知管理员q2411728460进行处理", tokenGroup, modelName)
 		if channel != nil {
